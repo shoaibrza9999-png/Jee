@@ -164,34 +164,56 @@ class InverseTrigProofs(Scene):
 
     def scene3_question4(self):
         # 1:18 - 1:24
-        q4_eq = MathTex(r"\sin^{-1}\frac{8}{17} + \sin^{-1}\frac{3}{5} = \tan^{-1}\frac{77}{36}").to_edge(UP)
+        q4_eq = MathTex(r"\sin^{-1}\frac{8}{17} + \sin^{-1}\frac{3}{5} =  \tan^{-1}\frac{77}{36}").to_edge(UP)
         self.play(Write(q4_eq))
         self.add_voiceover("For Question 4, we must prove that inverse sine of eight-seventeenths plus inverse sine of three-fifths equals inverse tangent of seventy-seven thirty-sixths.", duration=7)
 
         # 1:24 - 1:35
         # Split screen setup
-        col1_x = LEFT * 3
-        col2_x = RIGHT * 3
+        col1_x = LEFT * 3.5
+        col2_x = RIGHT * 3.5
 
-        sin_alpha = MathTex(r"\text{Let } \alpha = \sin^{-1}\frac{8}{17} \Rightarrow \sin \alpha = \frac{8}{17}").move_to(col1_x + UP * 1.5).scale(0.8)
-        sin_beta = MathTex(r"\text{Let } \beta = \sin^{-1}\frac{3}{5} \Rightarrow \sin \beta = \frac{3}{5}").move_to(col2_x + UP * 1.5).scale(0.8)
+        sin_alpha = MathTex(r"\sin \alpha = \frac{8}{17}").move_to(col1_x + UP * 1.5).scale(0.8)
+        sin_beta = MathTex(r"\sin \beta = \frac{3}{5}").move_to(col2_x + UP * 1.5).scale(0.8)
 
         self.play(Write(sin_alpha), Write(sin_beta))
         self.add_voiceover("Since our target is in terms of tangent, let's convert both sine terms into tangent terms. Let the first term be alpha, and the second term be beta.", duration=9)
 
-        # 1:35 - 1:45
-        tan_alpha_step1 = MathTex(r"\text{Base} = \sqrt{17^2 - 8^2} = 15").next_to(sin_alpha, DOWN, buff=0.5).scale(0.8)
-        tan_alpha_step2 = MathTex(r"\tan \alpha = \frac{8}{15} \Rightarrow \alpha = \tan^{-1}\frac{8}{15}").next_to(tan_alpha_step1, DOWN, buff=0.5).scale(0.8)
+        # Alpha Triangle (8, 15, 17)
+        alpha_tri = Polygon(ORIGIN, RIGHT * 3, RIGHT * 3 + UP * 1.6, color=WHITE).next_to(sin_alpha, DOWN, buff=0.5).scale(0.8)
+        a_right_angle = RightAngle(Line(alpha_tri.get_vertices()[1], alpha_tri.get_vertices()[0]), Line(alpha_tri.get_vertices()[1], alpha_tri.get_vertices()[2]), length=0.2, quadrant=(1,-1))
+        a_opp_label = MathTex("8").next_to(Line(alpha_tri.get_vertices()[1], alpha_tri.get_vertices()[2]), RIGHT).scale(0.7)
+        a_hyp_label = MathTex("17").next_to(Line(alpha_tri.get_vertices()[0], alpha_tri.get_vertices()[2]), UL, buff=-0.1).scale(0.7)
 
-        self.play(Write(tan_alpha_step1))
+        self.play(Create(alpha_tri), Create(a_right_angle))
+        self.play(Write(a_opp_label), Write(a_hyp_label))
+
+        # 1:35 - 1:45
+        tan_alpha_step1 = MathTex(r"\text{Base} = \sqrt{17^2 - 8^2} = 15").next_to(alpha_tri, DOWN, buff=0.2).scale(0.7)
+        a_adj_label = MathTex("15").next_to(Line(alpha_tri.get_vertices()[0], alpha_tri.get_vertices()[1]), DOWN).scale(0.7)
+
+        tan_alpha_step2 = MathTex(r"\tan \alpha = \frac{8}{15} \Rightarrow \alpha = \tan^{-1}\frac{8}{15}").next_to(tan_alpha_step1, DOWN, buff=0.3).scale(0.7)
+
+        self.play(Write(tan_alpha_step1), Write(a_adj_label))
         self.play(Write(tan_alpha_step2))
         self.add_voiceover("For alpha, the opposite is eight and hypotenuse is seventeen. Using Pythagoras, the base is fifteen. So, alpha equals inverse tangent of eight-fifteenths.", duration=10)
 
-        # 1:45 - 1:52
-        tan_beta_step1 = MathTex(r"\text{Base} = \sqrt{5^2 - 3^2} = 4").next_to(sin_beta, DOWN, buff=0.5).scale(0.8)
-        tan_beta_step2 = MathTex(r"\tan \beta = \frac{3}{4} \Rightarrow \beta = \tan^{-1}\frac{3}{4}").next_to(tan_beta_step1, DOWN, buff=0.5).scale(0.8)
+        # Beta Triangle (3, 4, 5)
+        beta_tri = Polygon(ORIGIN, RIGHT * 2.5, RIGHT * 2.5 + UP * 1.875, color=WHITE).next_to(sin_beta, DOWN, buff=0.5).scale(0.8)
+        b_right_angle = RightAngle(Line(beta_tri.get_vertices()[1], beta_tri.get_vertices()[0]), Line(beta_tri.get_vertices()[1], beta_tri.get_vertices()[2]), length=0.2, quadrant=(1,-1))
+        b_opp_label = MathTex("3").next_to(Line(beta_tri.get_vertices()[1], beta_tri.get_vertices()[2]), RIGHT).scale(0.7)
+        b_hyp_label = MathTex("5").next_to(Line(beta_tri.get_vertices()[0], beta_tri.get_vertices()[2]), UL, buff=-0.1).scale(0.7)
 
-        self.play(Write(tan_beta_step1))
+        self.play(Create(beta_tri), Create(b_right_angle))
+        self.play(Write(b_opp_label), Write(b_hyp_label))
+
+        # 1:45 - 1:52
+        tan_beta_step1 = MathTex(r"\text{Base} = \sqrt{5^2 - 3^2} = 4").next_to(beta_tri, DOWN, buff=0.2).scale(0.7)
+        b_adj_label = MathTex("4").next_to(Line(beta_tri.get_vertices()[0], beta_tri.get_vertices()[1]), DOWN).scale(0.7)
+
+        tan_beta_step2 = MathTex(r"\tan \beta = \frac{3}{4} \Rightarrow \beta = \tan^{-1}\frac{3}{4}").next_to(tan_beta_step1, DOWN, buff=0.3).scale(0.7)
+
+        self.play(Write(tan_beta_step1), Write(b_adj_label))
         self.play(Write(tan_beta_step2))
         self.add_voiceover("For beta, we already know a three-four-five triangle. The base is four, so beta equals inverse tangent of three-fourths.", duration=7)
 
@@ -199,7 +221,9 @@ class InverseTrigProofs(Scene):
         self.play(
             FadeOut(sin_alpha), FadeOut(sin_beta),
             FadeOut(tan_alpha_step1), FadeOut(tan_beta_step1),
-            FadeOut(tan_alpha_step2), FadeOut(tan_beta_step2)
+            FadeOut(tan_alpha_step2), FadeOut(tan_beta_step2),
+            FadeOut(alpha_tri), FadeOut(a_right_angle), FadeOut(a_opp_label), FadeOut(a_hyp_label), FadeOut(a_adj_label),
+            FadeOut(beta_tri), FadeOut(b_right_angle), FadeOut(b_opp_label), FadeOut(b_hyp_label), FadeOut(b_adj_label)
         )
 
         new_lhs = MathTex(r"\text{LHS } = \tan^{-1}\frac{8}{15} + \tan^{-1}\frac{3}{4}").move_to(LEFT * 2 + UP * 1)
@@ -222,20 +246,32 @@ class InverseTrigProofs(Scene):
         self.add_voiceover("In the numerator, finding a common denominator of sixty gives us thirty-two plus forty-five. In the denominator, we get one minus twenty-four sixtieths.", duration=9)
 
         # 2:20 - 2:28
-        step3 = MathTex(r"= \tan^{-1}\frac{77/60}{36/60} = \tan^{-1}\frac{77}{36}").next_to(step2, DOWN, buff=0.5, aligned_edge=LEFT)
-        self.play(Write(step3))
+        # Step 3 part A: showing the fractions
+        step3_pt1 = MathTex(r"= \tan^{-1}\frac{77/60}{36/60}").next_to(step2, DOWN, buff=0.5, aligned_edge=LEFT)
+        self.play(Write(step3_pt1))
 
-        final_box = SurroundingRectangle(step3, color=GREEN)
+        # Animate the cancellation of the 60s
+        # Approximate positions of the "60"s relative to the MathTex
+        cross_up = Line(step3_pt1.get_center() + UP*0.1 + LEFT*0.1, step3_pt1.get_center() + UP*0.3 + RIGHT*0.15, color=RED)
+        cross_down = Line(step3_pt1.get_center() + DOWN*0.3 + LEFT*0.1, step3_pt1.get_center() + DOWN*0.1 + RIGHT*0.15, color=RED)
+        self.play(Create(cross_up), Create(cross_down))
+
+        # Step 3 part B: showing the final answer
+        step3_pt2 = MathTex(r"= \tan^{-1}\frac{77}{36}").next_to(step3_pt1, RIGHT, buff=0.2)
+        self.play(Write(step3_pt2))
+
+        final_box = SurroundingRectangle(step3_pt2, color=GREEN)
         self.play(Create(final_box))
         self.add_voiceover("This simplifies to seventy-seven sixtieths divided by thirty-six sixtieths. The sixtieths cancel out, leaving us with inverse tangent of seventy-seven thirty-sixths. The right hand side is proved!", duration=10)
 
         # Transition to outro
         self.play(
             FadeOut(q4_eq), FadeOut(new_lhs), FadeOut(formula), FadeOut(formula_box),
-            FadeOut(step1), FadeOut(step2), FadeOut(step3), FadeOut(final_box)
+            FadeOut(step1), FadeOut(step2), FadeOut(step3_pt1), FadeOut(cross_up), FadeOut(cross_down), FadeOut(step3_pt2), FadeOut(final_box)
         )
 
     def scene4_outro(self):
+
         # 2:28 - 2:35
         thanks_text = Text("Thanks for watching!").scale(1.2).move_to(ORIGIN)
 
